@@ -1,0 +1,116 @@
+@import '~@angular/material/theming';
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue.
+$primary: mat-palette($mat-blue, 500, 200, 700);
+$accent:  mat-palette($mat-light-blue, 500, 200, 700);
+$warn:    mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$app-theme: mat-light-theme($primary, $accent, $warn);
+
+// Defines an additional mat-link class to decorate links diviating
+// from the strict rules of material design for the sake of clarity
+.mat-link {
+  cursor: pointer;
+  color: mat-color($accent);
+  text-decoration: underline;
+  //&:hover { text-decoration: underline; }
+}
+/*
+.mat-select-hide-underline .mat-form-field-underline {
+  display: none;
+}
+*/
+@mixin custom-material-theme($theme, $config: null) {
+
+  $config: ('autocomplete', 'badge', 'bottom-sheet', 'button', 'button-toggle', 'card', 'checkbox', 'chips', 'table', 'datepicker', 'dialog', 'divider', 'expansion-panel', 'form-field', 'grid-list', 'icon', 'input', 'list', 'menu', 'paginator', 'progress-bar', 'progress-spinner', 'radio', 'select', 'sidenav', 'slide', 'slider', 'stepper', 'sort', 'tabs', 'toolbar', 'tooltip', 'tree', 'snack-bar') !default;
+
+  @include mat-core-theme($theme);
+  @if index($config,'autocomplete') { @include mat-autocomplete-theme($theme);}
+  @if index($config,'badge') { @include mat-badge-theme($theme);}
+  @if index($config,'bottom-sheet') { @include mat-bottom-sheet-theme($theme);}
+  @if index($config,'button') { @include mat-button-theme($theme);}
+  @if index($config,'button-toggle') { @include mat-button-toggle-theme($theme);}
+  @if index($config,'card') { @include mat-card-theme($theme);}
+  @if index($config,'checkbox') { @include mat-checkbox-theme($theme);}
+  @if index($config,'chip') { @include mat-chips-theme($theme);}
+  @if index($config,'table') { @include mat-table-theme($theme);}
+  @if index($config,'datepicker') { @include mat-datepicker-theme($theme);}
+  @if index($config,'dialog') { @include mat-dialog-theme($theme);}
+  @if index($config,'divider') { @include mat-divider-theme($theme);}
+  @if index($config,'expansion-panel') { @include mat-expansion-panel-theme($theme);}
+  @if index($config,'form-field') { @include mat-form-field-theme($theme);}
+  @if index($config,'grid-list') { @include mat-grid-list-theme($theme);}
+  @if index($config,'icon') { @include mat-icon-theme($theme);}
+  @if index($config,'input') { @include mat-input-theme($theme);}
+  @if index($config,'list') { @include mat-list-theme($theme);}
+  @if index($config,'menu') { @include mat-menu-theme($theme);}
+  @if index($config,'paginator') { @include mat-paginator-theme($theme);}
+  @if index($config,'progress-bar') { @include mat-progress-bar-theme($theme);}
+  @if index($config,'progress-spinner') { @include mat-progress-spinner-theme($theme);}
+  @if index($config,'radio') { @include mat-radio-theme($theme);}
+  @if index($config,'select') { @include mat-select-theme($theme);}
+  @if index($config,'sidenav') { @include mat-sidenav-theme($theme);}
+  @if index($config,'slide-toggle') { @include mat-slide-toggle-theme($theme);}
+  @if index($config,'slider') { @include mat-slider-theme($theme);}
+  @if index($config,'stepper') { @include mat-stepper-theme($theme);}
+  @if index($config,'sort') { @include mat-sort-theme($theme);}
+  @if index($config,'tabs') { @include mat-tabs-theme($theme);}
+  @if index($config,'toolbar') { @include mat-toolbar-theme($theme);}
+  @if index($config,'tooltip') { @include mat-tooltip-theme($theme);}
+  @if index($config,'tree') { @include mat-tree-theme($theme);}
+  @if index($config,'snack-bar') { @include mat-snack-bar-theme($theme);}
+}
+
+@mixin reset-material-typo-margins(
+
+  $display-4:    24,
+  $display-3:    24,
+  $display-2:    24,
+  $display-1:    24,
+  $headline:     0,
+  $title:        0,
+  $subheading-2: 0,
+  $subheading-1: 0,
+  $body:         0
+
+) { 
+
+  .mat-h1, .mat-headline, .mat-typography h1 { margin: 0 0 #{$headline}px; }
+  .mat-h2, .mat-title, .mat-typography h2 { margin: 0 0 #{$title}px; }
+  .mat-h3, .mat-subheading-2, .mat-typography h3 { margin: 0 0 #{$subheading-2}px; }
+  .mat-h4, .mat-subheading-1, .mat-typography h4 { margin: 0 0 #{$subheading-1}px; }
+  .mat-h5, .mat-typography h5 { margin: 0 0 #{$body}px; }
+  .mat-h6, .mat-typography h6 { margin: 0 0 #{$body}px; }
+  .mat-body, .mat-body-1, .mat-typography { p { margin: 0 0 #{$body}px; }}
+  .mat-display-4, .mat-typography .mat-display-4 { margin: 0 0 #{$display-4}px; }
+  .mat-display-3, .mat-typography .mat-display-3 { margin: 0 0 #{$display-3}px; }
+  .mat-display-2, .mat-typography .mat-display-2 { margin: 0 0 #{$display-2}px; }
+  .mat-display-1, .mat-typography .mat-display-1 { margin: 0 0 #{$display-1}px; }
+}
+
+@mixin init-application-theme() {
+
+  // Includes the core theme indepeneted material style
+  @include mat-core();
+
+  // Include all the material theme styles
+  //@include angular-material-theme($app-theme);
+
+  @include custom-material-theme($app-theme);
+
+  @include reset-material-typo-margins();
+ 
+  // Adds custom application specific style extensions
+  a { @extend .mat-link; }
+
+  // Applies material typography rules globally
+  body {
+    @extend .mat-typography;
+
+    // Removes the margin
+    margin: 0;
+  }
+}

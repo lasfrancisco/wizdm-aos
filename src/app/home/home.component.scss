@@ -1,0 +1,84 @@
+
+
+:host {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  //justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+
+  //padding-top: 40px;
+
+
+  .banner {
+    position: relative;
+    //min-height: 350px;
+
+    width: 100%;
+    height: 80vh;
+    min-height: 480px;
+    max-height: 560px;
+
+    //@include wm-padding-top();
+
+    .textbox { 
+      
+      box-sizing: border-box;
+      padding: 25px; 
+
+       h1 {
+        //@include mat-typography-level-to-styles($wm-typography, display-1);
+        //font-family: mat-font-family($wm-typography, display-1);
+        //font-size  : mat-font-size($wm-typography, display-1);
+        //font-weight: 800;
+        text-align: center;
+      }
+
+      p { text-align: justify; }
+
+      button { margin: 16px 0; }
+      
+    }    
+  }
+
+  .features {
+
+    padding: 32px;
+
+    .row {
+
+      .cell {
+
+        padding: 8px;
+
+        .content {
+
+          width: 100%;
+          height: 100%;
+          padding: 16px;
+          text-align: center;
+          box-sizing: border-box;
+          border-radius: 5px;
+
+          .text { padding: 16px; }
+
+          .icon {
+            $size: 32px;
+            font-size: $size;
+            width: $size * 1.5;// Makes sure having room to center larger icons
+            height: $size;
+            line-height: $size;
+            //border-radius: 50%;
+            //border: 1px solid currentColor;
+            //box-sizing: border-box;
+            //text-align: center;
+            //vertical-align: middle;
+
+            //text-shadow: 5px 5px 1px gray;
+          }
+        }
+      }
+    }
+  }
+}

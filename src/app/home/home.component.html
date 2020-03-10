@@ -1,0 +1,49 @@
+
+
+<section fxLayout="row" fxLayoutAlign="center center" class="banner">
+
+<div fxFlex.gt-sm="50" fxLayout="column" fxLayoutAlign="center center" class="textbox" wmAnimate="landing" speed="slow" aos>
+  
+    <h1 class="mat-display-1"><b>{{ content.top.title }}</b></h1>
+     
+    <p>{{ content.top.description }}</p>
+ 
+    <button mat-raised-button color="accent">{{ content.top.call }}</button>
+
+    <p class="mat-small">{{ content.top.disclaimer }}</p>  
+
+  </div>
+
+  <img fxHide.lt-sm fxFlex="50" [src]="content.top.image" />
+
+</section>
+
+<section class="features" fxLayout="column" fxLayoutAlign="center center">
+
+	<div class="row" fxLayout="row wrap" fxLayout.lt-sm="column">
+
+		<ng-container *ngFor="let feat of content.features">
+
+			<div class="cell" fxFlex="33.3%" fxFlex.lt-md="50%" fxFlex.lt-sm="100%">
+
+				<div class="content" fxLayout="row" fxLayoutAlign="center center" wmAnimate="pulse" speed="fast" aos>
+
+           <wm-icon class="icon" [icon]="feat.icon"></wm-icon>
+           <div class="text">
+
+            <h4><b>{{ feat.title }}</b></h4>
+            <p class="mat-small"> {{ feat.description }}</p>
+            <div class="tools">
+    					
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </ng-container>
+    
+  </div>
+
+</section>
