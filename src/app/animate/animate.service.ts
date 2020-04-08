@@ -96,14 +96,11 @@ export class AnimateService {
   // Computes the element's visibility ratio against the viewport
   private visibility(elm: ElementRef<HTMLElement>): Observable<number> {
 
-    const el = elm.nativeElement;
-    if(!el) { return of(0); }
-
     // Resolves from the latest viewport
     return this.view$.pipe( map( view => {
 
       // Gets the element's bounding rect
-      const rect = el && el.getBoundingClientRect();
+      const rect = elm && elm.nativeElement && elm.nativeElement.getBoundingClientRect();
       if(!rect) { return 0; }
 
       // Return 1.0 when the element is fully within the viewport
