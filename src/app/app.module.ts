@@ -4,31 +4,27 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ScrollDispatchModule } from '@angular/cdk/scrolling';
-import {
-  MatToolbarModule,
-  MatSidenavModule,
-  MatMenuModule,
-  MatListModule,
-  MatButtonModule,
-  MatSelectModule,
-  MatIconModule,
-  MatDividerModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatStepperModule,
-  MatProgressBarModule,
-  MatTooltipModule,
-  MatGridListModule,
-  MatButtonToggleModule
-} from '@angular/material';
-
-
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 import { IconComponent } from './icon/icon.component';
-import { AnimateComponent } from './animate/animate.component';
+import { AnimateModule } from './animate/animate.module';
 
 @NgModule({
   imports:      [   
@@ -37,7 +33,7 @@ import { AnimateComponent } from './animate/animate.component';
     ReactiveFormsModule,
     HttpClientModule,
     FlexLayoutModule, 
-    ScrollDispatchModule,
+    ScrollingModule,
     MatToolbarModule,
     MatSidenavModule,
     MatMenuModule,
@@ -52,14 +48,14 @@ import { AnimateComponent } from './animate/animate.component';
     MatProgressBarModule,
     MatTooltipModule,
     MatGridListModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    AnimateModule
   ],
   
   declarations: [ 
     AppComponent,
     HomeComponent,
-    IconComponent,
-    AnimateComponent
+    IconComponent
   ],
   
   bootstrap: [ AppComponent ]
