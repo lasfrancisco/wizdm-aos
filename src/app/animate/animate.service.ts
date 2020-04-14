@@ -78,7 +78,7 @@ export class AnimateService {
   private aos(elm: ElementRef<HTMLElement>, threshold: number, once: boolean): Observable<boolean> {
 
     // Returns an AOS observable
-    return this.scroll.ancestorScrolled(elm, 0).pipe(
+    return this.scroll.ancestorScrolled(elm).pipe(
       // Makes sure triggering the start no matter there's no scroll event hits yet
       startWith(null),
       // Maps the scrolling to the element visibility value
