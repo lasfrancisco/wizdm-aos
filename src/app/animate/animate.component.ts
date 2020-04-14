@@ -27,7 +27,7 @@ export class AnimateComponent implements OnInit, OnDestroy {
 
   constructor(private elm: ElementRef, private scroll: AnimateService) {}
 
-  private get idle() { return { value: 'idle' }; }
+  private get idle() { return { value: `idle-${this.animate}` }; }
   private get play() { return { 
     value: this.animate,
     params: { timing: this.timing, delay: this.delay }
@@ -45,7 +45,7 @@ export class AnimateComponent implements OnInit, OnDestroy {
       normal: '1s', 
       fast: '500ms', 
       faster: '300ms' 
-    }[this.speed || 'normal'] || '1s';
+    }[speed || 'normal'] || '1s';
   }
 
   /** Delays the animation */
@@ -54,7 +54,7 @@ export class AnimateComponent implements OnInit, OnDestroy {
     const value = coerceNumberProperty(delay, 0);
     if(value) { 
       // Turns a valid number into a ms delay
-      this.delay = `${value}ms`;   
+      this.delay = `${value}ms`;
     }
     else {
       // Test the string for a valid delay combination
