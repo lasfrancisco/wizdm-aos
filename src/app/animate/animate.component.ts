@@ -15,11 +15,12 @@ export type wmAnimateSpeed = 'slower'|'slow'|'normal'|'fast'|'faster';
 })
 export class AnimateComponent implements OnInit, OnDestroy {
 
-  readonly timings = { slower: '3s', slow: '2s', normal: '1s', fast: '500ms', faster: '300ms' };
-
   private replay$ = new Subject<boolean>();
   private sub: Subscription;
-  
+
+  private timing: string = '1s';
+  private delay: string = '';
+
   // Animating properties
   public animating = false;
   public animated = false;
@@ -27,24 +28,40 @@ export class AnimateComponent implements OnInit, OnDestroy {
   constructor(private elm: ElementRef, private scroll: AnimateService) {}
 
   private get idle() { return { value: 'idle' }; }
-  private get play() { 
-    return { 
-      value: this.animate,
-      //delay: this.delay, 
-      params: { 
-        timing: this.timings[this.speed || 'normal'] 
-      }
-    };
-  }
+  private get play() { return { 
+    value: this.animate,
+    params: { timing: this.timing, delay: this.delay }
+  };}
 
-  //@Input() delay: number|string;
- 
   /** Selects the animation to be played */
   @Input('wmAnimate') animate: wmAnimations;
 
   /** Speeds up or slows down the animation */
-  @Input() speed: wmAnimateSpeed = 'normal';
+  @Input() set speed(speed: wmAnimateSpeed) {
+    // Turns the requested speed into a valid timing
+    this.timing = { 
+      slower: '3s', 
+      slow: '2s', 
+      normal: '1s', 
+      fast: '500ms', 
+      faster: '300ms' 
+    }[this.speed || 'normal'] || '1s';
+  }
 
+  /** Delays the animation */
+  @Input('delay') set postpone(delay: string) {
+    // Coerces the input into a number first
+    const value = coerceNumberProperty(delay, 0);
+    if(value) { 
+      // Turns a valid number into a ms delay
+      this.delay = `${value}ms`;   
+    }
+    else {
+      // Test the string for a valid delay combination
+      this.delay = /^\d+(?:ms|s)$/.test(delay) ? delay : '';
+    }
+  }
+  
   @HostBinding('@animate')
   private trigger: string | {} = 'idle';
 
