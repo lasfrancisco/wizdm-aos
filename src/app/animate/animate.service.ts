@@ -3,14 +3,6 @@ import { ScrollDispatcher, ViewportRuler } from '@angular/cdk/scrolling';
 import { Observable, BehaviorSubject, combineLatest, of, iif, OperatorFunction } from 'rxjs';
 import { map, startWith, distinctUntilChanged, first, scan, switchMap,debounceTime, shareReplay } from 'rxjs/operators';
 
-export interface AnimateView {
-
-  left?: number;
-  top?: number;
-  right?: number;
-  bottom?: number;
-}
-
 /** Returns an observable mirroring the source while running within the given zone */
 export function runInZone<T>(zone: NgZone): OperatorFunction<T, T> {
   return source => {
@@ -29,35 +21,30 @@ export function runInZone<T>(zone: NgZone): OperatorFunction<T, T> {
 })
 export class AnimateService {
 
-  private update$ = new BehaviorSubject<AnimateView>(null);
-  private view$: Observable<AnimateView>;
+  private view$: Observable<ClientRect>;
 
-  constructor(private scroll: ScrollDispatcher, viewPort: ViewportRuler, private zone: NgZone) {
+  protected get viewRect(): ClientRect {
 
-    // Tracks for viewport changes giving it 100ms time to accurately update for orientation changes
-    this.view$ = combineLatest( this.update$, viewPort.change(100).pipe( 
-      
-      startWith( viewPort.getViewportRect() ), 
-    
-      map( () => viewPort.getViewportRect() )
+    const rect = this.viewPort.getViewportRect();
 
-    )).pipe( debounceTime(20), map( ([view, port]) => {
+    console.log('Animating within the viewport rect:', rect);
 
-      // Updates the view area combining the viewport with the updated value from AnimateView directive
-      const left = view && view.left || port.left;
-      const top = view && view.top || port.top;
-      const right = view && view.right || port.right;
-      const bottom = view && view.bottom || port.bottom;
-
-      return { left, top, right, bottom };
-
-      // Makes all the component to share the same viewport values
-    }), shareReplay(1) );
+    return rect;
   }
 
-  // Forces to udate the animate viewport with the given values
-  public update(view: AnimateView|null) { 
-    this.update$.next(view); 
+  constructor(readonly scroll: ScrollDispatcher, readonly viewPort: ViewportRuler, private zone: NgZone) {
+
+    // Tracks for viewport changes giving it 100ms time to accurately update for orientation changes
+    this.view$ = viewPort.change(100).pipe( 
+      
+      startWith( null ), 
+    
+      map( () => this.viewRect ),
+
+      debounceTime(20), 
+      // Makes all the component to share the same viewport values
+      shareReplay(1) 
+    );
   }
 
   // Triggers the animation

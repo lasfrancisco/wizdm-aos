@@ -1,11 +1,19 @@
 
 :host {
   
-  .reload {
+  .fixed {
     position: fixed;
     z-index: 2;
     margin: 8px;
     right: 0;
     top: 0;
+  }
+
+  .animate-view {
+    position: fixed;
+    left: 0; top: 56px;
+    right: 0; bottom: 100px;
+    overflow: auto;
+    border: 1px dashed gray;
   }
 }

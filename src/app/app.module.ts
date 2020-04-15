@@ -10,6 +10,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
@@ -37,6 +38,7 @@ import { AnimateModule } from './animate/animate.module';
     MatToolbarModule,
     MatSidenavModule,
     MatMenuModule,
+    MatCheckboxModule,
     MatListModule,
     MatButtonModule,
     MatSelectModule,
