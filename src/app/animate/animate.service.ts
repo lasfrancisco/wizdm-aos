@@ -84,6 +84,8 @@ export class AnimateService {
       const rect = elm && elm.nativeElement && elm.nativeElement.getBoundingClientRect();
       if(!rect) { return 0; }
 
+      console.log(view, rect);
+
       // Return 1.0 when the element is fully within the viewport
       if(rect.left > view.left - 1 && rect.top > view.top - 1 && rect.right < view.right + 1 && rect.bottom < view.bottom + 1) { 
         return 1; 
