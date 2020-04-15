@@ -6,8 +6,8 @@ import { trigger } from '@angular/animations';
 import { AnimateService } from './animate.service';
 
 import { beat, bounce, headShake, heartBeat, pulse, rubberBand, shake, swing, wobble, jello, tada, flip } from './attention-seekers';
-import { bumpIn, bounceIn, fadeIn, flipIn, landing, zoomIn } from './entrances';
-import { bounceOut, fadeOut, zoomOut } from './exits';
+import { bumpIn, bounceIn, fadeIn, flipIn, jackInTheBox, landing, rollIn, zoomIn } from './entrances';
+import { bounceOut, fadeOut, hinge, rollOut, zoomOut } from './exits';
 
 export type wmAnimateSpeed = 'slower'|'slow'|'normal'|'fast'|'faster';
 export type wmAnimations = 
@@ -40,7 +40,9 @@ export type wmAnimations =
   'fadeInDown' |
   'flipInX' |
   'flipInY' |
+  'jackInTheBox' |
   'landing' |
+  'rollIn' |
   'zoomIn' |
   'zoomInDown' |
   'zoomInLeft' |
@@ -58,6 +60,8 @@ export type wmAnimations =
   'fadeOutLeft' |
   'fadeOutDown' |
   'fadeOutUp' |
+  'hinge' |
+  'rollOut' |
   'zoomOut' | 
   'zoomOutDown' | 
   'zoomOutRight' | 
@@ -88,12 +92,16 @@ export type wmAnimations =
   ...bounceIn,
   ...fadeIn,
   ...flipIn,
+  ...jackInTheBox,
   ...landing,
+  ...rollIn,
   ...zoomIn,
 
   // Exits
   ...bounceOut, 
   ...fadeOut,
+  ...hinge,
+  ...rollOut, 
   ...zoomOut
   ])]
 })
@@ -101,9 +109,10 @@ export class AnimateComponent implements OnInit, OnDestroy {
 
   private replay$ = new Subject<boolean>();
   private sub: Subscription;
-
-  private timing: string = '1s';
-  private delay: string = '';
+  
+  // Animating parameters
+  private timing: string;
+  private delay: string;
 
   // Animating properties
   public animating = false;
@@ -114,10 +123,15 @@ export class AnimateComponent implements OnInit, OnDestroy {
   @HostBinding('@animate') private trigger;
 
   private get idle() { return { value: `idle-${this.animate}` }; }
-  private get play() { return { 
-    value: this.animate,
-    params: { timing: this.timing, delay: this.delay }
-  };}
+  private get play() {
+
+    const params = {}; 
+    // Builds the params object, so, leaving to the default values when undefined
+    if(!!this.timing) { params['timing'] = this.timing; }
+    if(!!this.delay) { params['delay'] = this.delay; }  
+    
+    return { value: this.animate, params };
+  }
 
   /** Selects the animation to be played */
   @Input('wmAnimate') animate: wmAnimations;
@@ -130,8 +144,8 @@ export class AnimateComponent implements OnInit, OnDestroy {
       slow: '2s', 
       normal: '1s', 
       fast: '500ms', 
-      faster: '300ms' 
-    }[speed || 'normal'] || '1s';
+      faster: '300ms'
+    }[speed || 'normal'];
   }
 
   /** Delays the animation */
@@ -187,10 +201,8 @@ export class AnimateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
     // Sets the idle state for the given animation
     this.trigger = this.idle;
-
     // Triggers the animation based on the input flags
     this.sub = this.replay$.pipe( 
       // Waits the next round to re-trigger
