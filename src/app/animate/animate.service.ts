@@ -37,10 +37,7 @@ export class AnimateService {
     
       map( () => this.viewRect ),
 
-      debounceTime(20), 
-
-      tap( rt => console.log(rt) ),
-
+      debounceTime(20),
       // Makes all the component to share the same viewport values
       shareReplay(1) 
     );
