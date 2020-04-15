@@ -1,17 +1,101 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, HostBinding, HostListener, ElementRef } from '@angular/core';
 import { coerceBooleanProperty, coerceNumberProperty } from '@angular/cdk/coercion';
+import { startWith, delay, takeWhile } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
-import { startWith, delay } from 'rxjs/operators';
+import { trigger } from '@angular/animations';
 import { AnimateService } from './animate.service';
-import { $animations } from './animate.animations';
 
-export type wmAnimations = 'landing'|'pulse'|'beat'|'heartBeat'|'fadeIn'|'fadeInRight'|'fadeInLeft'|'fadeInUp'|'fadeInDown'|'zoomIn'|'bumpIn'|'fadeOut'|'fadeOutRight'|'fadeOutLeft'|'fadeOutDown'|'fadeOutUp'|'zoomOut';
+import { beat, bounce, headShake, heartBeat, pulse, rubberBand, shake, swing, wobble, jello, tada, flip } from './attention-seekers';
+import { bumpIn, bounceIn, fadeIn, flipIn, landing, zoomIn } from './entrances';
+import { bounceOut, fadeOut, zoomOut } from './exits';
+
 export type wmAnimateSpeed = 'slower'|'slow'|'normal'|'fast'|'faster';
+export type wmAnimations = 
+
+  // Attention seekers
+  'beat' |
+  'bounce' |
+  'flip' |
+  'headShake' |
+  'heartBeat' |
+  'jello' |
+  'pulse' |
+  'rubberBand' |
+  'shake' |
+  'swing' |
+  'tada' |
+  'wobble' |
+
+  // Entrances
+  'bumpIn' |
+  'bounceIn' |
+  'bounceInDown' |
+  'bounceInLeft' |
+  'bounceInUp' |
+  'bounceInRight' |
+  'fadeIn' |
+  'fadeInRight' |
+  'fadeInLeft' |
+  'fadeInUp' |
+  'fadeInDown' |
+  'flipInX' |
+  'flipInY' |
+  'landing' |
+  'zoomIn' |
+  'zoomInDown' |
+  'zoomInLeft' |
+  'zoomInUp' |
+  'zoomInRight' |
+  
+  // Exits
+  'bounceOut' |
+  'bounceOutDown' |
+  'bounceOutUp' |
+  'bounceOutRight' |
+  'bounceOutLeft' |
+  'fadeOut' |
+  'fadeOutRight' |
+  'fadeOutLeft' |
+  'fadeOutDown' |
+  'fadeOutUp' |
+  'zoomOut' | 
+  'zoomOutDown' | 
+  'zoomOutRight' | 
+  'zoomOutUp' | 
+  'zoomOutLeft';
 
 @Component({
  selector: '[wmAnimate]',
  template: '<ng-content></ng-content>',
- animations: $animations
+ animations: [ trigger('animate', [
+
+  // Attention seekers
+  ...beat,
+  ...bounce,
+  ...flip,
+  ...headShake, 
+  ...heartBeat,
+  ...jello,
+  ...pulse,
+  ...rubberBand,
+  ...shake,
+  ...swing,
+  ...tada,
+  ...wobble,
+
+  // Entrances
+  ...bumpIn,
+  ...bounceIn,
+  ...fadeIn,
+  ...flipIn,
+  ...landing,
+  ...zoomIn,
+
+  // Exits
+  ...bounceOut, 
+  ...fadeOut,
+  ...zoomOut
+  ])]
 })
 export class AnimateComponent implements OnInit, OnDestroy {
 
@@ -26,6 +110,8 @@ export class AnimateComponent implements OnInit, OnDestroy {
   public animated = false;
 
   constructor(private elm: ElementRef, private scroll: AnimateService) {}
+
+  @HostBinding('@animate') private trigger;
 
   private get idle() { return { value: `idle-${this.animate}` }; }
   private get play() { return { 
@@ -62,9 +148,6 @@ export class AnimateComponent implements OnInit, OnDestroy {
     }
   }
   
-  @HostBinding('@animate')
-  private trigger: string | {} = 'idle';
-
   /** Disables the animation */
   @Input('disabled') set disableAnimation(value: boolean) { this.disabled = coerceBooleanProperty(value); }
   @HostBinding('@.disabled') 
@@ -95,11 +178,8 @@ export class AnimateComponent implements OnInit, OnDestroy {
   /** Replays the animation */
   @Input() set replay(replay: any) {
 
-    // Skips whenever the animation never triggered   
-    if(this.trigger === 'idle') { return; }
-
-    // Re-triggers the animation again on request
-    if(coerceBooleanProperty(replay)) {
+    // Re-triggers the animation again on request (skipping the very fist value)
+    if(!!this.trigger && coerceBooleanProperty(replay)) {
       
       this.trigger = this.idle;
       this.replay$.next(true);
@@ -108,6 +188,9 @@ export class AnimateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    // Sets the idle state for the given animation
+    this.trigger = this.idle;
+
     // Triggers the animation based on the input flags
     this.sub = this.replay$.pipe( 
       // Waits the next round to re-trigger
@@ -115,7 +198,9 @@ export class AnimateComponent implements OnInit, OnDestroy {
       // Triggers immediately when not paused
       startWith(!this.paused),
       // Builds the AOS observable from the common service
-      this.scroll.trigger(this.elm, this.threshold, this.once)
+      this.scroll.trigger(this.elm, this.threshold),
+      // Stop taking the first on trigger when aosOnce is set
+      takeWhile(trigger => !trigger || !this.once, true),
 
     ).subscribe( trigger => {
       // Triggers the animation to play or to idle

@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy, ElementRef, NgZone } from '@angular/core';
 import { ScrollDispatcher, ViewportRuler } from '@angular/cdk/scrolling';
 import { Observable, BehaviorSubject, combineLatest, of, iif, OperatorFunction } from 'rxjs';
-import { map, startWith, distinctUntilChanged, delay, first, scan, takeUntil, takeWhile, switchMap,debounceTime, shareReplay } from 'rxjs/operators';
+import { map, startWith, distinctUntilChanged, first, scan, switchMap,debounceTime, shareReplay } from 'rxjs/operators';
 
 export interface AnimateView {
 
@@ -61,7 +61,7 @@ export class AnimateService {
   }
 
   // Triggers the animation
-  public trigger(elm: ElementRef<HTMLElement>, threshold: number, once: boolean): OperatorFunction<boolean, boolean> {
+  public trigger(elm: ElementRef<HTMLElement>, threshold: number): OperatorFunction<boolean, boolean> {
 
     // Waits until the zone is stable once, aka the render is complete so the element to measure is there 
     return source => this.zone.onStable.pipe( 
@@ -70,12 +70,12 @@ export class AnimateService {
       // Triggers the play and replay requests
       switchMap( () => source ),
       // Triggers the while scrolling
-      switchMap( trigger => threshold > 0 ? this.aos(elm, threshold, once) : of(trigger) ) 
+      switchMap( trigger => threshold > 0 ? this.aos(elm, threshold) : of(trigger) ) 
     );
   }
 
   // Triggers the animation on scroll
-  private aos(elm: ElementRef<HTMLElement>, threshold: number, once: boolean): Observable<boolean> {
+  private aos(elm: ElementRef<HTMLElement>, threshold: number): Observable<boolean> {
 
     // Returns an AOS observable
     return this.scroll.ancestorScrolled(elm, 0).pipe(
@@ -87,8 +87,6 @@ export class AnimateService {
       scan((result, visiblility) => (visiblility >= threshold) || (result && visiblility > 0), false),
       // Distincts the resulting triggers 
       distinctUntilChanged(),
-      // Stop taking the first on trigger when aosOnce is set
-      takeWhile(trigger => !trigger || !once, true),
       // Runs within the angular zone to trigger change detection back on
       runInZone(this.zone)
     );
