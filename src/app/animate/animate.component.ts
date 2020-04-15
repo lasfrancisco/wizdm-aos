@@ -4,105 +4,30 @@ import { startWith, delay, takeWhile } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
 import { trigger } from '@angular/animations';
 import { AnimateService } from './animate.service';
-
+// Animations
 import { beat, bounce, headShake, heartBeat, pulse, rubberBand, shake, swing, wobble, jello, tada, flip } from './attention-seekers';
 import { bumpIn, bounceIn, fadeIn, flipIn, jackInTheBox, landing, rollIn, zoomIn } from './entrances';
 import { bounceOut, fadeOut, hinge, rollOut, zoomOut } from './exits';
 
 export type wmAnimateSpeed = 'slower'|'slow'|'normal'|'fast'|'faster';
 export type wmAnimations = 
-
   // Attention seekers
-  'beat' |
-  'bounce' |
-  'flip' |
-  'headShake' |
-  'heartBeat' |
-  'jello' |
-  'pulse' |
-  'rubberBand' |
-  'shake' |
-  'swing' |
-  'tada' |
-  'wobble' |
-
+  'beat'|'bounce'|'flip'|'headShake'|'heartBeat'|'jello'|'pulse'|'rubberBand'|'shake'|'swing'|'tada'|'wobble'|
   // Entrances
-  'bumpIn' |
-  'bounceIn' |
-  'bounceInDown' |
-  'bounceInLeft' |
-  'bounceInUp' |
-  'bounceInRight' |
-  'fadeIn' |
-  'fadeInRight' |
-  'fadeInLeft' |
-  'fadeInUp' |
-  'fadeInDown' |
-  'flipInX' |
-  'flipInY' |
-  'jackInTheBox' |
-  'landing' |
-  'rollIn' |
-  'zoomIn' |
-  'zoomInDown' |
-  'zoomInLeft' |
-  'zoomInUp' |
-  'zoomInRight' |
-  
+  'bumpIn'|'bounceIn'|'bounceInDown'|'bounceInLeft'|'bounceInUp'|'bounceInRight'|'fadeIn'|'fadeInRight'|'fadeInLeft'|'fadeInUp'|'fadeInDown'|'flipInX'|'flipInY'|'jackInTheBox'|'landing'|'rollIn'|'zoomIn'|'zoomInDown'|'zoomInLeft'|'zoomInUp'|'zoomInRight'|
   // Exits
-  'bounceOut' |
-  'bounceOutDown' |
-  'bounceOutUp' |
-  'bounceOutRight' |
-  'bounceOutLeft' |
-  'fadeOut' |
-  'fadeOutRight' |
-  'fadeOutLeft' |
-  'fadeOutDown' |
-  'fadeOutUp' |
-  'hinge' |
-  'rollOut' |
-  'zoomOut' | 
-  'zoomOutDown' | 
-  'zoomOutRight' | 
-  'zoomOutUp' | 
-  'zoomOutLeft';
+  'bounceOut'|'bounceOutDown'|'bounceOutUp'|'bounceOutRight'|'bounceOutLeft'|'fadeOut'|'fadeOutRight'|'fadeOutLeft'|'fadeOutDown'|'fadeOutUp'|'hinge'|'rollOut'|'zoomOut'|'zoomOutDown'|'zoomOutRight'|'zoomOutUp'|'zoomOutLeft';
 
 @Component({
  selector: '[wmAnimate]',
  template: '<ng-content></ng-content>',
  animations: [ trigger('animate', [
-
   // Attention seekers
-  ...beat,
-  ...bounce,
-  ...flip,
-  ...headShake, 
-  ...heartBeat,
-  ...jello,
-  ...pulse,
-  ...rubberBand,
-  ...shake,
-  ...swing,
-  ...tada,
-  ...wobble,
-
+  ...beat,...bounce,...flip,...headShake,...heartBeat,...jello,...pulse,...rubberBand,...shake,...swing,...tada,...wobble,
   // Entrances
-  ...bumpIn,
-  ...bounceIn,
-  ...fadeIn,
-  ...flipIn,
-  ...jackInTheBox,
-  ...landing,
-  ...rollIn,
-  ...zoomIn,
-
+ ...bumpIn,...bounceIn,...fadeIn,...flipIn,...jackInTheBox,...landing,...rollIn,...zoomIn,
   // Exits
-  ...bounceOut, 
-  ...fadeOut,
-  ...hinge,
-  ...rollOut, 
-  ...zoomOut
+ ...bounceOut,...fadeOut,...hinge,...rollOut,...zoomOut
   ])]
 })
 export class AnimateComponent implements OnInit, OnDestroy {
