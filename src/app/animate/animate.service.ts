@@ -85,7 +85,7 @@ export class AnimateService {
       if(!rect) { return 0; }
 
       // Return 1.0 when the element is fully within the viewport
-      if(rect.left >= view.left && rect.top >= view.top && rect.right < view.right + 1 && rect.bottom < view.bottom + 1) { 
+      if(rect.left > view.left - 1 && rect.top > view.top - 1 && rect.right < view.right + 1 && rect.bottom < view.bottom + 1) { 
         return 1; 
       }
 
