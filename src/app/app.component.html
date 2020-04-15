@@ -13,7 +13,7 @@
 </div>
 
 <!-- Child view with scroller -->
-<div class="animate-view" wmAnimateView cdkScrollable *ngIf="child.checked; else mainView">
+<div class="animate-view" wmAnimateView useElement cdkScrollable *ngIf="child.checked; else mainView">
 
   <wm-home *ngIf="home"></wm-home>
 

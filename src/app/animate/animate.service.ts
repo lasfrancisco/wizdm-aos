@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy, ElementRef, NgZone } from '@angular/core';
 import { ScrollDispatcher, ViewportRuler } from '@angular/cdk/scrolling';
 import { Observable, BehaviorSubject, combineLatest, of, iif, OperatorFunction } from 'rxjs';
-import { map, startWith, distinctUntilChanged, first, scan, switchMap, debounceTime, shareReplay } from 'rxjs/operators';
+import { tap, map, startWith, distinctUntilChanged, first, scan, switchMap, debounceTime, shareReplay } from 'rxjs/operators';
 
 /** Returns an observable mirroring the source while running within the given zone */
 export function runInZone<T>(zone: NgZone): OperatorFunction<T, T> {
@@ -38,6 +38,9 @@ export class AnimateService {
       map( () => this.viewRect ),
 
       debounceTime(20), 
+
+      tap( rt => console.log(rt) ),
+
       // Makes all the component to share the same viewport values
       shareReplay(1) 
     );
