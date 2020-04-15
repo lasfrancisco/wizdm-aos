@@ -2,20 +2,24 @@
 
 <div class="fixed" fxLayout="row" fxLayoutAlign="end center">
 
-<mat-checkbox class="example-margin" #child>Child view</mat-checkbox>
+  <!-- Switches between the main window and a child window -->
+  <mat-checkbox class="example-margin" #child>Child view</mat-checkbox>
 
-<button mat-icon-button (click)="reload()">
-  <wm-icon icon="fas:fa-redo-alt"></wm-icon>
-</button>
+  <!-- Reload button -->
+  <button mat-icon-button (click)="reload()">
+    <wm-icon icon="fas:fa-redo-alt"></wm-icon>
+  </button>
 
 </div>
 
-<!--div class="animate-view" wmAnimateView cdkScrollable *ngIf="child.checked; else mainView"-->
+<!-- Child view with scroller -->
+<div class="animate-view" wmAnimateView cdkScrollable *ngIf="child.checked; else mainView">
 
   <wm-home *ngIf="home"></wm-home>
 
-<!--/div-->
+</div>
 
+<!-- Main view -->
 <ng-template #mainView>
 
   <wm-home *ngIf="home"></wm-home>

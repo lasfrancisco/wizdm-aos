@@ -11,23 +11,13 @@ import { AnimateService } from './animate.service';
 })
 export class AnimateDirective extends AnimateService {
 
-  constructor(private elref: ElementRef<HTMLElement>, scroll: ScrollDispatcher, viewport: ViewportRuler, zone: NgZone) { 
-    
-    super(scroll, viewport, zone); 
-  }
-
-  private get element(): HTMLElement {
-    return this.elref.nativeElement;
-  }
-
+  // Overrides the viewport with the element's client rect
   protected get viewRect(): ClientRect {
 
-    //const port = super.viewRect;
+    return this.elref.nativeElement.getBoundingClientRect();
+  }
 
-    const rect = this.element.getBoundingClientRect();
-
-    console.log('Animating within the element client rect:', rect);
-
-    return rect;
+  constructor(private elref: ElementRef<HTMLElement>, scroll: ScrollDispatcher, viewport: ViewportRuler, zone: NgZone) { 
+    super(scroll, viewport, zone); 
   }
 }

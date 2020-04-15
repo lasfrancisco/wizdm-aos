@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy, ElementRef, NgZone } from '@angular/core';
 import { ScrollDispatcher, ViewportRuler } from '@angular/cdk/scrolling';
 import { Observable, BehaviorSubject, combineLatest, of, iif, OperatorFunction } from 'rxjs';
-import { map, startWith, distinctUntilChanged, first, scan, switchMap,debounceTime, shareReplay } from 'rxjs/operators';
+import { map, startWith, distinctUntilChanged, first, scan, switchMap, debounceTime, shareReplay } from 'rxjs/operators';
 
 /** Returns an observable mirroring the source while running within the given zone */
 export function runInZone<T>(zone: NgZone): OperatorFunction<T, T> {
@@ -23,13 +23,9 @@ export class AnimateService {
 
   private view$: Observable<ClientRect>;
 
+  // By default, use the viewport rectangle
   protected get viewRect(): ClientRect {
-
-    const rect = this.viewPort.getViewportRect();
-
-    console.log('Animating within the viewport rect:', rect);
-
-    return rect;
+    return this.viewPort.getViewportRect();
   }
 
   constructor(readonly scroll: ScrollDispatcher, readonly viewPort: ViewportRuler, private zone: NgZone) {
