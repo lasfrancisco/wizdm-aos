@@ -60,6 +60,8 @@ export class AnimateService {
   // Triggers the animation on scroll
   private aos(elm: ElementRef<HTMLElement>, threshold: number): Observable<boolean> {
 
+    // A variation based on IntersectionObserver can be conditionally implemented here. 
+
     // Returns an AOS observable
     return this.scroll.ancestorScrolled(elm, 0).pipe(
       // Makes sure triggering the start no matter there's no scroll event hits yet
