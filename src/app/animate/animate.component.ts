@@ -138,7 +138,7 @@ export class AnimateComponent implements OnInit, OnDestroy {
       this.scroll.trigger(this.elm, this.threshold),
       // Prevents false visibility blinks due to the animation transformations
       filter( trigger => !this.animating ),
-      // Stop taking the first on trigger when aosOnce is set
+      // Stops after the first on trigger when 'once' is set
       takeWhile(trigger => !trigger || !this.once, true),
 
     ).subscribe( trigger => {
