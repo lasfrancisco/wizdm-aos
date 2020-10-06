@@ -23,7 +23,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { AppRoutingModule } from './app-routing.module';
 import { IconComponent } from './icon/icon.component';
 import { AnimateModule } from './animate/animate.module';
 
